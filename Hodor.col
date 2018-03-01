@@ -1,0 +1,34 @@
+pragma solidity ^0.4.20;
+
+/*
+Simple contract that returns a Greeting
+*/
+
+contract Hodor {
+    
+    address creator;
+    string greeting;
+    
+    function Hodor(string _greeting) public{
+        
+        greeting = _greeting;
+        creator = msg.sender;
+        
+    }
+    
+    // returns the current greeting
+    function greet() constant public returns (string){
+        
+        return greeting;
+        
+    }
+    
+    // changes the current greeting
+    function setGreeting(string _greeting) public {
+        
+        greeting = _greeting;
+        
+    }
+    
+    
+}
