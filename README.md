@@ -1,4 +1,4 @@
-Bunch of very basic Smart Contracts build on Ethereum BlockChain.
+Bunch of very basic Smart Contracts build on Solidity - Ethereum BlockChain.
 
 - Hodor:
 A simple smart contract that GREETS. You can also update its greetings.
