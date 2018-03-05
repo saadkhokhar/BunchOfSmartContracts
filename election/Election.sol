@@ -1,7 +1,9 @@
 pragma solidity ^0.4.20;
 
-contract Election{
+import "browser/Strings.sol"; // update import path as per IDE, right now using REMIX
 
+contract Election{
+    using Strings for string;
 
     address private chairman;
     string public electionName;
@@ -9,11 +11,12 @@ contract Election{
     mapping(address=>Voter) private voters;
     bool isElectionOngoing;
     
+    string enrolledCandidates;
+    
     event ShowEnrolledCandidate(string candidateName);
     event ElectionResult(string name, uint voteCount);
     event Alert(string msg);
-    
-    
+
     struct Candidate{
         
         string candidateName;
@@ -62,6 +65,7 @@ contract Election{
     function enrollCandidate(string _candidateName) public restrictedAccess{
         
         require(!isElectionOngoing);
+        assert(!_candidateName.isEmpty());
         
         // May need to place a check to see if candidate is already enrolled
         candidatesList.push(Candidate(_candidateName,0));
@@ -75,13 +79,15 @@ contract Election{
         
         require(candidatesList.length > 0);
         
-        // TODO: create a library for concatinating strings for better presentation of candidate Listing. too bad solidity does not support that off the shelf yet :(
+        
         for(uint i = 0 ; i < candidatesList.length ; i++){
-                
-            //Create an event to display candidate name
-            ShowEnrolledCandidate(candidatesList[i].candidateName);
-
+            
+            enrolledCandidates = i == 0 ? "" : enrolledCandidates.concat(", ");        
+            enrolledCandidates = enrolledCandidates.concat(candidatesList[i].candidateName);    
+        
         }
+        
+        ShowEnrolledCandidate(enrolledCandidates);
         
     }
     
@@ -105,7 +111,6 @@ contract Election{
         
         require(isElectionOngoing);
         
-        //TODO: Improvement case: An election has to start before it can be terminated
         isElectionOngoing = false;
 
         for(uint i =0; i< candidatesList.length; i++){
@@ -124,6 +129,7 @@ contract Election{
         
         require(isElectionOngoing);
         require(!voters[msg.sender].voted);
+        assert(voteIndex <= candidatesList.length - 1);
         
         voters[msg.sender].voted = true;
         voters[msg.sender].voteIndex = voteIndex;
