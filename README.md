@@ -10,3 +10,6 @@ A simple smart contract that offers Chairman to create an election. Following ac
 	- Initiate election (restricted to creator)
 	- vote (public)
 	- End Election and show how much votes which candidate got
+
+- Polling
+A simple smart contract for election using Truffle and TestRPC (Ganache-Cli)
